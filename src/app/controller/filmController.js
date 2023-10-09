@@ -1,30 +1,29 @@
-const actorSchema = require('../model/ActorModel');
+const filmSchema = require('../model/FilmModel');
 const {validationResult } = require('express-validator');
-const actorController = {
-    getActor: async (req, resp, next) => {
-        await actorSchema.find({}).then(data => {
+const filmController = {
+    getFilm: async (req, resp, next) => {
+        await filmSchema.find({}).then(data => {
             return resp.json(data);
         }).catch(err => {
             resp.status(400).json({ message: "Error" });
         });
     },
-    newActor: async (req, resp, next) => {
-        console.log(req.body);
+    newFilm: async (req, resp, next) => {
         const valid = validationResult(req);
         if (!valid.isEmpty()) {
             return resp.json({ errors: valid.array()[0].msg });
         }
-        const actor = new actorSchema(req.body);
-        const actorSaved = await actor.save();
-        return resp.json(actorSaved);
+        const film = new filmSchema(req.body);
+        const filmSaved = await film.save();
+        return resp.json(filmSaved);
     },
-    editActor: async (req, resp, next) => {
+    editFilm: async (req, resp, next) => {
         const valid = validationResult(req);
         if (!valid.isEmpty()) {
             return resp.json({ errors: valid.array()[0].msg });
         }
         
-        await actorSchema.findOneAndUpdate({ _id: req.params.id }, req.body, { 
+        await filmSchema.findOneAndUpdate({ _id: req.params.id }, req.body, { 
             // return object after update
             new: true }).then(data => {
             if(data){
@@ -36,4 +35,4 @@ const actorController = {
         });
     },
 }
-module.exports = actorController;
+module.exports = filmController;
