@@ -1,29 +1,29 @@
-const directorSchema = require('../model/DirectorModel');
+const actorSchema = require('../model/ArtistModel');
 const {validationResult } = require('express-validator');
-const directorController = {
-    getDirector: async (req, resp, next) => {
-        await directorSchema.find({}).then(data => {
+const actorController = {
+    getArtist: async (req, resp, next) => {
+        await actorSchema.find({}).then(data => {
             return resp.json(data);
         }).catch(err => {
             resp.status(400).json({ message: "Error" });
         });
     },
-    newDirector: async (req, resp, next) => {
+    newArtist: async (req, resp, next) => {
         const valid = validationResult(req);
         if (!valid.isEmpty()) {
             return resp.json({ errors: valid.array()[0].msg });
         }
-        const director = new directorSchema(req.body);
-        const directorSaved = await director.save();
-        return resp.json(directorSaved);
+        const actor = new actorSchema(req.body);
+        const actorSaved = await actor.save();
+        return resp.json(actorSaved);
     },
-    editDirector: async (req, resp, next) => {
+    editArtist: async (req, resp, next) => {
         const valid = validationResult(req);
         if (!valid.isEmpty()) {
             return resp.json({ errors: valid.array()[0].msg });
         }
-        console.log(typeof req.params.id);
-        await directorSchema.findOneAndUpdate({ _id: req.params.id }, req.body, { 
+        
+        await actorSchema.findOneAndUpdate({ _id: req.params.id }, req.body, { 
             // return object after update
             new: true }).then(data => {
             if(data){
@@ -35,4 +35,4 @@ const directorController = {
         });
     },
 }
-module.exports = directorController;
+module.exports = actorController;

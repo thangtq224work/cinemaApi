@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const slugGenerator = require('mongoose-slug-updater');
+const occupation = require("../const/occupation");
 // create an schema
 mongoose.plugin(slugGenerator);
-const actorSchema = new mongoose.Schema({
+const artistSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -30,8 +31,13 @@ const actorSchema = new mongoose.Schema({
         type:[mongoose.Schema.Types.ObjectId],
         ref:"Film"
     },
+    occupation:{
+        type:[String],
+        enum: Object.values(occupation),
+        default:[occupation.ACTOR]
+    },
     slug: { type: String, slug: ["name"], unique:true }
 
 },{ timestamps: true });
 
-module.exports = mongoose.model("Actor", actorSchema); 
+module.exports = mongoose.model("Artist", artistSchema); 

@@ -1,8 +1,6 @@
 const route = require('express').Router();
-const actorRoute = require("./actorRoute");
-const directorRoute = require("./directorRoute");
+const artistRoute = require("./artistRoute");
 const filmRoute = require("./filmRoute");
-route.use('/actor',actorRoute);
-route.use('/director',directorRoute);
+route.use('/artist',artistRoute);
 route.use('/film',filmRoute);
 module.exports = route;

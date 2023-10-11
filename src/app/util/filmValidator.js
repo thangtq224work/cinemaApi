@@ -1,5 +1,5 @@
 const { body } = require('express-validator');
-const directorModel = require("../model/DirectorModel");
+const artistModel = require("../model/ArtistModel");
 const mongoose = require('mongoose');
 const newFilmValidator = [
     body("name", "Name từ 1 đến 255 kí tự").trim().isLength({ min: 1, max: 255 }),
@@ -11,13 +11,25 @@ const newFilmValidator = [
         if(!value && value != 0){
             throw new Error('Director không hợp lệ');
         }
-        const existingUser = await directorModel.find({ _id: new mongoose.Types.ObjectId(value) });
-        console.log(existingUser);
+        const existingUser = await artistModel.find({ _id: new mongoose.Types.ObjectId(value) });
         if (existingUser) {
             throw new Error('Director không tồn tại');
         }
+        return true;
     }),
-    body("actor", "Actor không hợp lệ").isArray({ min: 1 }),
+    body("actor").custom((value) => {
+        if(!Array.isArray(value)){
+            throw new Error('actor không hợp lệ');
+        }
+        const existingUser = value.every(async (item)=>{
+            const tmp = await artistModel.find({ _id: new mongoose.Types.ObjectId(item) });
+            return tmp;
+        });
+        if (!existingUser) {
+            throw new Error('actor không tồn tại');
+        }
+        return true;
+    }),
 
 
 ];

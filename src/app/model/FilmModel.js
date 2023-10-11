@@ -29,11 +29,11 @@ const filmSchema = new mongoose.Schema({
     },
     actor:{
         type:[mongoose.Schema.Types.ObjectId],
-        ref:"Actor"
+        ref:"Artist"
     },
     director:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Director"
+        ref:"Artist"
     },
     slug: { type: String, slug: ["name"], unique:true }
 
